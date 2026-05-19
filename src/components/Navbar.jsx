@@ -11,9 +11,8 @@ const Navbar = ({ isDarkMode, toggleDarkMode }) => {
         i18n.changeLanguage(lang)
     }
 
-    const hasToken = localStorage.getItem('token') || localStorage.getItem('adminToken');
-    const isAdmin = !!localStorage.getItem('adminToken');
-    const dashboardPath = isAdmin ? '/admin/dashboard' : '/dashboard';
+    const hasToken = !!localStorage.getItem('token');
+    const dashboardPath = '/dashboard';
 
     return (
         <>
