@@ -1,5 +1,7 @@
 // Markazlashtirilgan API konfiguratsiyasi
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+const API_BASE = import.meta.env.VITE_API_URL !== undefined && import.meta.env.VITE_API_URL !== ''
+  ? import.meta.env.VITE_API_URL
+  : (import.meta.env.DEV ? 'http://localhost:5001' : '');
 
 export const API = `${API_BASE}/api`;
 export const UPLOADS = `${API_BASE}/uploads`;
