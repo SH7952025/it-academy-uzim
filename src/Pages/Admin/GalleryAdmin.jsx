@@ -6,6 +6,7 @@ const GalleryAdmin = () => {
     const [file, setFile] = useState(null);
     const [caption, setCaption] = useState('');
     const [loading, setLoading] = useState(true);
+    const [uploading, setUploading] = useState(false);
     const [imageToDelete, setImageToDelete] = useState(null);
     const token = getAdminToken();
 
@@ -22,21 +23,29 @@ const GalleryAdmin = () => {
 
     const handleUpload = async (e) => {
         e.preventDefault();
-        if (!file) return;
+        if (!file || uploading) return;
+        setUploading(true);
         const data = new FormData();
         data.append('image', file);
         data.append('caption', caption);
 
-        const res = await fetch(`${API}/gallery`, {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${token}` },
-            body: data
-        });
+        try {
+            const res = await fetch(`${API}/gallery`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}` },
+                body: data
+            });
 
-        if (res.ok) {
-            setFile(null);
-            setCaption('');
-            fetchGallery();
+            if (res.ok) {
+                setFile(null);
+                setCaption('');
+                e.target.reset();
+                fetchGallery();
+            }
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setUploading(false);
         }
     };
 
@@ -68,7 +77,17 @@ const GalleryAdmin = () => {
                     <label className="text-xs font-bold text-gray-500 uppercase">Tavsif (ixtiyoriy)</label>
                     <input className="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2 text-white" value={caption} onChange={e => setCaption(e.target.value)} />
                 </div>
-                <button type="submit" className="bg-blue-600 text-white px-6 py-2.5 rounded-xl font-bold">Yuklash</button>
+                <button 
+                    type="submit" 
+                    disabled={uploading}
+                    className={`bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-bold transition-all flex items-center justify-center min-w-[120px] gap-2 ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                    {uploading ? (
+                        <><i className="fas fa-spinner fa-spin text-sm"></i> Yuklash...</>
+                    ) : (
+                        'Yuklash'
+                    )}
+                </button>
             </form>
 
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">

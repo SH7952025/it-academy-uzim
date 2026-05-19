@@ -48,6 +48,8 @@ const CoursesAdmin = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (uploading) return;
+        setUploading(true);
         const formData = new FormData();
         Object.keys(current).forEach(k => { if (k !== 'imageFile') formData.append(k, current[k]); });
         if (current.imageFile) formData.append('image', current.imageFile);
@@ -55,15 +57,21 @@ const CoursesAdmin = () => {
         const url = isEditing ? `${API}/courses/${current.id}` : `${API}/courses`;
         const method = isEditing ? 'PATCH' : 'POST';
 
-        const res = await fetch(url, { method, headers: { 'Authorization': `Bearer ${token}` }, body: formData });
-        if (res.ok) {
-            showMsg(isEditing ? '✅ Kurs yangilandi' : '✅ Kurs qo\'shildi');
-            setIsEditing(false);
-            setCurrent({ title: '', description: '', price: '', category: 'Frontend' });
-            setShowForm(false);
-            fetchCourses();
-        } else {
-            showMsg('❌ Xatolik yuz berdi', 'error');
+        try {
+            const res = await fetch(url, { method, headers: { 'Authorization': `Bearer ${token}` }, body: formData });
+            if (res.ok) {
+                showMsg(isEditing ? '✅ Kurs yangilandi' : '✅ Kurs qo\'shildi');
+                setIsEditing(false);
+                setCurrent({ title: '', description: '', price: '', category: 'Frontend' });
+                setShowForm(false);
+                fetchCourses();
+            } else {
+                showMsg('❌ Xatolik yuz berdi', 'error');
+            }
+        } catch (err) {
+            showMsg('❌ Server bilan aloqa yo\'q', 'error');
+        } finally {
+            setUploading(false);
         }
     };
 
@@ -241,9 +249,19 @@ const CoursesAdmin = () => {
                         />
                     </div>
                     <div className="flex gap-3 mt-4">
-                        <button type="submit" className="flex items-center gap-2 px-4 sm:px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold text-sm transition-colors shadow-lg shadow-blue-600/25">
-                            <i className={`fas ${isEditing ? 'fa-save' : 'fa-plus'} text-xs`}></i>
-                            {isEditing ? 'Saqlash' : 'Qo\'shish'}
+                        <button 
+                            type="submit" 
+                            disabled={uploading}
+                            className={`flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold text-sm transition-colors shadow-lg shadow-blue-600/25 ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        >
+                            {uploading ? (
+                                <><i className="fas fa-spinner fa-spin text-xs"></i> Saqlanmoqda...</>
+                            ) : (
+                                <>
+                                    <i className={`fas ${isEditing ? 'fa-save' : 'fa-plus'} text-xs`}></i>
+                                    {isEditing ? 'Saqlash' : 'Qo\'shish'}
+                                </>
+                            )}
                         </button>
                         <button type="button" onClick={() => { setIsEditing(false); setCurrent({ title: '', description: '', price: '', category: 'Frontend' }); setShowForm(false); }}
                             className="px-4 sm:px-5 py-2.5 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-xl font-semibold text-sm transition-colors">

@@ -6,6 +6,7 @@ const NewsAdmin = () => {
     const [formData, setFormData] = useState({ title: '', content: '' });
     const [imageFile, setImageFile] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [uploading, setUploading] = useState(false);
     const [showForm, setShowForm] = useState(false);
     const [newsToDelete, setNewsToDelete] = useState(null);
     const token = getAdminToken();
@@ -23,22 +24,30 @@ const NewsAdmin = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (uploading) return;
+        setUploading(true);
         const data = new FormData();
         data.append('title', formData.title);
         data.append('content', formData.content);
         if (imageFile) data.append('image', imageFile);
 
-        const res = await fetch(`${API}/news`, {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${token}` },
-            body: data
-        });
+        try {
+            const res = await fetch(`${API}/news`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}` },
+                body: data
+            });
 
-        if (res.ok) {
-            setFormData({ title: '', content: '' });
-            setImageFile(null);
-            setShowForm(false);
-            fetchNews();
+            if (res.ok) {
+                setFormData({ title: '', content: '' });
+                setImageFile(null);
+                setShowForm(false);
+                fetchNews();
+            }
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setUploading(false);
         }
     };
 
@@ -75,7 +84,17 @@ const NewsAdmin = () => {
                         <span className="truncate">{imageFile ? imageFile.name : 'Yangilik uchun rasm yuklash (Majburiy emas)...'}</span>
                         <input type="file" accept="image/*" className="hidden" onChange={e => setImageFile(e.target.files[0])} />
                     </label>
-                    <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold transition-all shadow-lg shadow-blue-600/20">Saqlash</button>
+                    <button 
+                        type="submit" 
+                        disabled={uploading}
+                        className={`w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold transition-all shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2 ${uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    >
+                        {uploading ? (
+                            <><i className="fas fa-spinner fa-spin text-sm"></i> Saqlanmoqda...</>
+                        ) : (
+                            'Saqlash'
+                        )}
+                    </button>
                 </form>
             )}
 
