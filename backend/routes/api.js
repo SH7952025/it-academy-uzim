@@ -9,6 +9,7 @@ const settingController = require('../controllers/settingController');
 const authMiddleware = require('../middleware/authMiddleware');
 const { optionalAuth } = authMiddleware;
 const uploadMiddleware = require('../middleware/uploadMiddleware');
+const compressImage = require('../middleware/compressMiddleware');
 const { apiLimiter, loginLimiter, registerLimiter, contactLimiter, videoLimiter, adminOnly } = require('../middleware/security');
 
 // Global API rate limit - skip for admins
@@ -30,14 +31,14 @@ router.delete('/users/:id', authMiddleware, adminOnly, authController.deleteUser
 // Courses
 router.get('/courses', courseController.getAllCourses);
 router.get('/courses/:id', courseController.getCourseById);
-router.post('/courses', authMiddleware, adminOnly, uploadMiddleware.single('image'), courseController.createCourse);
-router.patch('/courses/:id', authMiddleware, adminOnly, uploadMiddleware.single('image'), courseController.updateCourse);
+router.post('/courses', authMiddleware, adminOnly, uploadMiddleware.single('image'), compressImage, courseController.createCourse);
+router.patch('/courses/:id', authMiddleware, adminOnly, uploadMiddleware.single('image'), compressImage, courseController.updateCourse);
 router.delete('/courses/:id', authMiddleware, adminOnly, courseController.deleteCourse);
 
 // Mentors
 router.get('/mentors', mentorController.getAllMentors);
-router.post('/mentors', authMiddleware, adminOnly, uploadMiddleware.single('image'), mentorController.createMentor);
-router.patch('/mentors/:id', authMiddleware, adminOnly, uploadMiddleware.single('image'), mentorController.updateMentor);
+router.post('/mentors', authMiddleware, adminOnly, uploadMiddleware.single('image'), compressImage, mentorController.createMentor);
+router.patch('/mentors/:id', authMiddleware, adminOnly, uploadMiddleware.single('image'), compressImage, mentorController.updateMentor);
 router.delete('/mentors/:id', authMiddleware, adminOnly, mentorController.deleteMentor);
 
 // Contact - rate limited
@@ -47,8 +48,8 @@ router.delete('/contacts/:id', authMiddleware, adminOnly, contactController.dele
 
 // Comments / Reviews
 router.get('/comments', commentController.getAllComments);
-router.post('/comments', authMiddleware, adminOnly, uploadMiddleware.single('image'), commentController.createComment);
-router.patch('/comments/:id', authMiddleware, adminOnly, uploadMiddleware.single('image'), commentController.updateComment);
+router.post('/comments', authMiddleware, adminOnly, uploadMiddleware.single('image'), compressImage, commentController.createComment);
+router.patch('/comments/:id', authMiddleware, adminOnly, uploadMiddleware.single('image'), compressImage, commentController.updateComment);
 router.delete('/comments/:id', authMiddleware, adminOnly, commentController.deleteComment);
 
 // Settings
@@ -77,12 +78,12 @@ const contentController = require('../controllers/contentController');
 
 // NEWS
 router.get('/news', contentController.getNews);
-router.post('/news', authMiddleware, adminOnly, uploadMiddleware.single('image'), contentController.createNews);
+router.post('/news', authMiddleware, adminOnly, uploadMiddleware.single('image'), compressImage, contentController.createNews);
 router.delete('/news/:id', authMiddleware, adminOnly, contentController.deleteNews);
 
 // GALLERY
 router.get('/gallery', contentController.getGallery);
-router.post('/gallery', authMiddleware, adminOnly, uploadMiddleware.single('image'), contentController.uploadGallery);
+router.post('/gallery', authMiddleware, adminOnly, uploadMiddleware.single('image'), compressImage, contentController.uploadGallery);
 router.delete('/gallery/:id', authMiddleware, adminOnly, contentController.deleteGallery);
 
 module.exports = router;
