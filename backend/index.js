@@ -23,6 +23,7 @@ Course.hasMany(Lesson, { foreignKey: 'courseId' });
 Lesson.belongsTo(Course, { foreignKey: 'courseId' });
 
 const app = express();
+app.set('trust proxy', 1); // Trust Nginx proxy for correct IP rate limiting
 
 // ==========================================
 // 🔒 SECURITY LAYERS
