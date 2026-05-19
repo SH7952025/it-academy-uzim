@@ -5,8 +5,8 @@ import ContactForm from "./Pages/Contact"
 import Courses from "./Pages/Courses"
 import News from "./Pages/News";
 import Gallery from "./Pages/Gallery";
-import Navbar from "./components/navbar";
-import Footer from "./components/footer";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 // Admin
 import Login from "./Pages/Admin/Login";
