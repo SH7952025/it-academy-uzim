@@ -38,6 +38,13 @@ const CoursePlayer = () => {
         return url;
     };
 
+    const isDirectVideoLink = (url) => {
+        if (!url) return false;
+        const cleanUrl = url.split('?')[0].toLowerCase();
+        const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.m4v', '.mkv'];
+        return videoExtensions.some(ext => cleanUrl.endsWith(ext));
+    };
+
     const [completedLessonIds, setCompletedLessonIds] = useState([]);
 
     useEffect(() => {
@@ -149,7 +156,7 @@ const CoursePlayer = () => {
 
                 {/* Video Player Section */}
                 <div className="relative aspect-video bg-black w-full shadow-2xl group flex items-center justify-center max-h-[65vh] md:max-h-[70vh] mx-auto">
-                    {activeLesson.videoType === 'url' ? (
+                    {activeLesson.videoType === 'url' && !isDirectVideoLink(activeLesson.videoUrl) ? (
                         <div className="relative w-full h-full max-h-[65vh] md:max-h-[70vh] flex items-center justify-center bg-black overflow-hidden select-none">
                             <iframe
                                 className="w-full h-full max-h-[65vh] md:max-h-[70vh] object-contain relative z-0"
@@ -177,7 +184,10 @@ const CoursePlayer = () => {
                                 controlsList="nodownload" // Chrome/Edge download tugmasini yashirish
                                 onContextMenu={(e) => e.preventDefault()}
                                 className="w-full h-full max-h-[65vh] md:max-h-[70vh] object-contain" 
-                                src={`${API}/videos/${activeLesson.videoUrl}?token=${getToken()}`}
+                                src={activeLesson.videoType === 'file' 
+                                    ? `${API}/videos/${activeLesson.videoUrl}?token=${getToken()}`
+                                    : activeLesson.videoUrl
+                                }
                             >
                                 Sizning brauzeringiz videoni qo'llab-quvvatlamaydi.
                             </video>

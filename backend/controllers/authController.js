@@ -97,6 +97,17 @@ exports.register = async (req, res) => {
 
     const token = jwt.sign({ id: user.id, role: user.role, fullName: user.fullName }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
+    const userAgent = req.headers['user-agent'] || 'Unknown Device';
+    const deviceFingerprint = crypto.createHash('md5').update(userAgent + req.ip).digest('hex');
+
+    await Session.create({
+      userId: user.id,
+      deviceId: deviceFingerprint,
+      deviceInfo: userAgent,
+      token: token,
+      lastActive: new Date()
+    });
+
     res.status(201).json({ message: 'Ro\'yxatdan o\'tdingiz', token, user: { id: user.id, fullName: user.fullName, phone: user.phone, role: user.role } });
   } catch (error) {
     res.status(500).json({ message: 'Xatolik', error: error.message });
