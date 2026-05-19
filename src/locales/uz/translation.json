@@ -1,0 +1,47 @@
+{
+  "nav": {
+    "home": "Asosiy",
+    "courses": "Kurslar",
+    "about": "Biz haqimizda",
+    "contact": "Bog'lanish"
+  },
+  "hero": {
+    "title1": "Kelajak kasblarini",
+    "title2": "biz bilan o'rganing!",
+    "subtitle": "Tekinga o'qib, pul ishlashga nima deysiz? Ishonmayapsizmi? Biz buni isbotlaymiz.",
+    "cta": "Kurslar bilan tanishish"
+  },
+  "courses": {
+    "title": "Ommabop kurslar",
+    "subtitle": "Kasbga yo'naltirilgan praktikumlar yordamida eng tez va samarali yo'llar bilan mutaxassislar qatoriga qo'shiling.",
+    "price": "Kurs narxi",
+    "all": "Barcha kurslar"
+  },
+  "mentors": {
+    "title": "Tajribali Mentorlar",
+    "subtitle": "Barcha kurslarimiz tajribali mentorlar tomonidan tayyorlangan",
+    "notfound": "Mentorlar topilmadi."
+  },
+  "contact": {
+    "title": "Bog'lanish",
+    "subtitle": "Savollaringiz bo'lsa murojaat qiling",
+    "phone": "Telefon",
+    "email": "Elektron pochta",
+    "address": "Manzil",
+    "name": "F.I.SH",
+    "message": "Xabar",
+    "send": "Yuborish"
+  },
+  "footer": {
+    "tagline": "Biz bilan muvaffaqiyatga erishing",
+    "subtitle": "Eng kuchlilar biz bilan qoladi!",
+    "rights": "© 2024. Barcha huquqlar himoyalangan",
+    "terms": "Terminlar",
+    "privacy": "Xavfsizlik"
+  },
+  "reviews": {
+    "badge": "Izohlar",
+    "title": "O’quvchilarimiz fikri",
+    "subtitle": "O’quvchilarimiz tomonidan qoldirilgan samimiy izohlar"
+  }
+}

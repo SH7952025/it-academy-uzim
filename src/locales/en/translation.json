@@ -1,0 +1,47 @@
+{
+  "nav": {
+    "home": "Home",
+    "courses": "Courses",
+    "about": "About Us",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title1": "Learn the careers",
+    "title2": "of the future with us!",
+    "subtitle": "Want to study for free and earn money? Don't believe it? We'll prove it.",
+    "cta": "Explore Courses"
+  },
+  "courses": {
+    "title": "Popular Courses",
+    "subtitle": "Join the ranks of professionals the fastest and most effective way through career-oriented practice programmes.",
+    "price": "Course price",
+    "all": "All courses"
+  },
+  "mentors": {
+    "title": "Experienced Mentors",
+    "subtitle": "All our courses are prepared by experienced mentors",
+    "notfound": "No mentors found."
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Have questions? Get in touch",
+    "phone": "Phone",
+    "email": "Email",
+    "address": "Address",
+    "name": "Full Name",
+    "message": "Message",
+    "send": "Send"
+  },
+  "footer": {
+    "tagline": "Succeed with us",
+    "subtitle": "The best stay with us!",
+    "rights": "© 2024. All rights reserved",
+    "terms": "Terms",
+    "privacy": "Privacy"
+  },
+  "reviews": {
+    "badge": "Testimonials",
+    "title": "Student Reviews",
+    "subtitle": "Sincere feedback from our global community of students"
+  }
+}
